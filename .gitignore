@@ -1,0 +1,21 @@
+# .gitignore
+
+# tfstate（ローカルに残っている場合）
+*.tfstate
+*.tfstate.backup
+.terraform.tfstate.lock.info
+
+# .terraformディレクトリ（プロバイダのバイナリなど）
+.terraform/
+
+# 変数ファイル（認証情報や秘密情報を含む可能性）
+*.tfvars
+#!terraform/env/dev.tfvars
+*.tfvars.json
+
+# クラッシュログ
+crash.log
+crash.*.log
+
+# 環境変数ファイル
+.env
