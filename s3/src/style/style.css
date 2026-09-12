@@ -1,0 +1,224 @@
+/* =====================================================
+Bootstrap 5 fallback (Artifact CSP ではCDNが読めないため、必要なクラスをここに再定義する)
+===================================================== */
+*,*::before,*::after{box-sizing:border-box}
+.d-flex{display:flex!important}.d-none{display:none!important}.d-block{display:block!important}
+.flex-column{flex-direction:column!important}.flex-fill{flex:1 1 auto!important}.flex-wrap{flex-wrap:wrap!important}
+.align-items-center{align-items:center!important}.align-items-start{align-items:flex-start!important}
+.justify-content-center{justify-content:center!important}.justify-content-between{justify-content:space-between!important}
+.gap-1{gap:.25rem!important}.gap-2{gap:.5rem!important}.gap-3{gap:1rem!important}
+.m-0{margin:0!important}.mb-0{margin-bottom:0!important}.mb-1{margin-bottom:.25rem!important}
+.mb-2{margin-bottom:.5rem!important}.mb-3{margin-bottom:1rem!important}.mb-4{margin-bottom:1.5rem!important}
+.mt-1{margin-top:.25rem!important}.mt-2{margin-top:.5rem!important}.mt-3{margin-top:1rem!important}
+.ms-auto{margin-left:auto!important}
+.p-0{padding:0!important}.p-2{padding:.5rem!important}.p-3{padding:1rem!important}
+.px-2{padding-left:.5rem!important;padding-right:.5rem!important}
+.px-3{padding-left:1rem!important;padding-right:1rem!important}
+.py-2{padding-top:.5rem!important;padding-bottom:.5rem!important}
+.py-3{padding-top:1rem!important;padding-bottom:1rem!important}
+.text-center{text-align:center!important}.text-start{text-align:left!important}
+.text-muted{color:#6c757d!important}.text-primary{color:#0d6efd!important}
+.text-danger{color:#dc3545!important}.text-white{color:#fff!important}.text-dark{color:#212529!important}
+.fw-bold{font-weight:700!important}.fw-semibold{font-weight:600!important}.fw-normal{font-weight:400!important}
+.fs-4{font-size:1.5rem!important}.fs-5{font-size:1.25rem!important}.fs-6{font-size:1rem!important}
+.small{font-size:.875em!important}
+.w-100{width:100%!important}.h-100{height:100%!important}
+.bg-white{background-color:#fff!important}.bg-light{background-color:#f8f9fa!important}
+.bg-primary{background-color:#0d6efd!important}.bg-danger{background-color:#dc3545!important}
+.bg-secondary{background-color:#6c757d!important}
+.border{border:1px solid #dee2e6!important}.border-bottom{border-bottom:1px solid #dee2e6!important}.border-0{border:0!important}
+.rounded{border-radius:.375rem!important}.rounded-circle{border-radius:50%!important}.rounded-pill{border-radius:50rem!important}
+.shadow-sm{box-shadow:0 .125rem .25rem rgba(0,0,0,.075)!important}
+.position-fixed{position:fixed!important}.position-relative{position:relative!important}.position-absolute{position:absolute!important}
+.bottom-0{bottom:0!important}.end-0{right:0!important}.start-0{left:0!important}.top-0{top:0!important}
+.overflow-auto{overflow:auto!important}.overflow-hidden{overflow:hidden!important}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.25rem;padding:.375rem .75rem;font-size:1rem;font-weight:400;line-height:1.5;color:#212529;text-align:center;cursor:pointer;user-select:none;background-color:transparent;border:1px solid transparent;border-radius:.375rem;transition:color .15s,background-color .15s,border-color .15s;text-decoration:none;font-family:inherit}
+.btn:disabled{opacity:.65;pointer-events:none}
+.btn-sm{padding:.25rem .5rem;font-size:.875rem;border-radius:.25rem}
+.btn-lg{padding:.5rem 1rem;font-size:1.25rem;border-radius:.5rem}
+.btn-primary{color:#fff;background-color:#0d6efd;border-color:#0d6efd}
+.btn-primary:hover{color:#fff;background-color:#0b5ed7;border-color:#0a58ca}
+.btn-secondary{color:#fff;background-color:#6c757d;border-color:#6c757d}
+.btn-secondary:hover{background-color:#5c636a}
+.btn-danger{color:#fff;background-color:#dc3545;border-color:#dc3545}
+.btn-danger:hover{background-color:#bb2d3b}
+.btn-outline-primary{color:#0d6efd;border-color:#0d6efd;background-color:transparent}
+.btn-outline-primary:hover{color:#fff;background-color:#0d6efd;border-color:#0d6efd}
+.btn-outline-secondary{color:#6c757d;border-color:#6c757d;background-color:transparent}
+.btn-outline-secondary:hover{color:#fff;background-color:#6c757d;border-color:#6c757d}
+.btn-outline-danger{color:#dc3545;border-color:#dc3545;background-color:transparent}
+.btn-outline-danger:hover{color:#fff;background-color:#dc3545;border-color:#dc3545}
+
+/* Cards */
+.card{background-color:#fff;border:1px solid rgba(0,0,0,.125);border-radius:.375rem}
+.card-body{flex:1 1 auto;padding:1rem}
+
+/* Forms */
+.form-control,.form-select{display:block;width:100%;padding:.375rem .75rem;font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;border:1px solid #ced4da;border-radius:.375rem;transition:border-color .15s,box-shadow .15s;outline:none;font-family:inherit;appearance:auto}
+.form-control:focus,.form-select:focus{border-color:#86b7fe;box-shadow:0 0 0 .25rem rgba(13,110,253,.25)}
+.form-control.is-invalid{border-color:#dc3545}
+.form-label{margin-bottom:.5rem;font-weight:500;display:block}
+.form-text{margin-top:.25rem;font-size:.875em;color:#6c757d}
+.invalid-feedback{display:none;width:100%;margin-top:.25rem;font-size:.875em;color:#dc3545}
+.is-invalid~.invalid-feedback{display:block}
+textarea.form-control{resize:vertical}
+
+/* Badge */
+.badge{display:inline-block;padding:.35em .65em;font-size:.75em;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.375rem}
+
+/* =====================================================
+    このアプリ独自のCSS
+    ===================================================== */
+body{
+    font-family:'Noto Sans JP',sans-serif;
+    background:#f0f2f5;
+    color:#212529;
+    margin:0;
+}
+
+/* Centered narrow shell (mobile-first feel on desktop) */
+.app-shell{
+    position:relative;
+    max-width:480px;
+    margin:0 auto;
+    height:100vh;
+    height:100dvh;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 0 40px rgba(0,0,0,.08);
+}
+
+/* Top Bar */
+.top-bar{
+    flex-shrink:0;
+    background:#fff;
+    border-bottom:1px solid #dee2e6;
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    z-index:10;
+}
+.top-bar-title{
+    font-size:1.1rem;
+    font-weight:700;
+}
+
+/* Scrollable content */
+.content-area{
+    flex:1;
+    overflow-y:auto;
+    padding:16px 16px 96px; /* bottom gap for FAB */
+}
+
+/* ── Calendar grid ── */
+.cal-weekdays{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    margin-bottom:4px;
+}
+.cal-wday{
+    text-align:center;
+    font-size:12px;
+    font-weight:600;
+    color:#6c757d;
+    padding:4px 0;
+}
+.cal-wday.w-sun{color:#dc3545}
+.cal-wday.w-sat{color:#0d6efd}
+
+.cal-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:2px;
+}
+.cal-cell{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:background .13s;
+    padding:4px 0 5px;
+}
+.cal-cell:hover:not(.cal-empty){background:#e9ecef}
+.cal-cell.cal-empty{cursor:default;pointer-events:none}
+.cal-day-num{
+    font-size:14px;
+    font-weight:500;
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+}
+.cal-cell.cal-sun .cal-day-num{color:#dc3545}
+.cal-cell.cal-sat .cal-day-num{color:#0d6efd}
+
+/* Today highlight */
+.cal-cell.cal-today .cal-day-num{
+    width:28px;height:28px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;
+}
+.cal-cell.cal-today.cal-sun .cal-day-num{background:#dc3545}
+.cal-cell.cal-today.cal-sat .cal-day-num{background:#0d6efd}
+
+/* Event dot */
+.ev-dot{
+    width:5px;height:5px;
+    border-radius:50%;
+    background:#0d6efd;
+    display:block;
+    margin-top:2px;
+    flex-shrink:0;
+}
+.cal-cell.cal-sun .ev-dot{background:#dc3545}
+
+/* ── Detail view ── */
+.detail-date{font-size:22px;font-weight:700;margin-bottom:16px}
+.ev-card{margin-bottom:10px}
+.ev-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* Delete confirm inline */
+.del-confirm-inline{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    padding:8px 10px;
+    border:1px solid #dc3545;
+    border-radius:.375rem;
+    background:rgba(220,53,69,.06);
+}
+.del-confirm-inline span{font-size:.875rem;color:#dc3545;font-weight:500}
+
+/* ── Register form ── */
+.date-row{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.date-row select{width:78px!important;flex-shrink:0}
+.date-row input[type="number"]{width:84px!important;flex-shrink:0}
+.date-unit{color:#6c757d;font-weight:500;font-size:.9rem}
+
+.del-confirm-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    padding:10px 14px;
+    border:1px solid #dc3545;
+    border-radius:.375rem;
+    background:rgba(220,53,69,.06);
+}
+.del-confirm-bar>span{font-size:.875rem;color:#dc3545;font-weight:500}
+
+/* ── FAB ── */
+.fab{
+    position:absolute;  /* within app-shell (position:relative) */
+    bottom:24px;right:20px;
+    width:56px;height:56px;
+    border-radius:50%;
+    font-size:24px;
+    box-shadow:0 4px 14px rgba(13,110,253,.45);
+    z-index:20;
+}

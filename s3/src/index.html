@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<title>記念日カレンダー</title>
+<!--
+  Bootstrap 5 + Vue 3 構成
+  ローカルで開く場合は下の link タグのコメントを外してください:
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  ※ Artifact プレビューでは CSP の制限により CDN が読み込めないため、
+     必要な Bootstrap クラスをすべて下の <style> 内に再定義しています。
+-->
+
+<!-- ① 事前接続（パフォーマンス最適化） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- ② フォントの読み込み -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<!-- ③ BootStrapの読み込み -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+<!-- ④自分のCSSの読み込み -->
+<link rel="stylesheet" href="./style/style.css">
+
+
+<!-- Vueのマウントポイント -->
+<div id="app">
+<div class="app-shell">
+
+  <!-- ══ Top Bar ══ -->
+  <!-- Calendar view: month navigation -->
+  <div v-if="view === 'calendar'" class="top-bar justify-content-between">
+    <button class="btn btn-outline-secondary btn-sm" @click="prevMonth" aria-label="前月">◀</button>
+    <span class="top-bar-title">{{ currentYear }}年 {{ viewMonth }}月</span>
+    <button class="btn btn-outline-secondary btn-sm" @click="nextMonth" aria-label="来月">▶</button>
+  </div>
+  
+  <!-- Detail / Register: back button -->
+  <div v-else class="top-bar gap-2">
+    <button class="btn btn-outline-secondary btn-sm" @click="goBack">← 戻る</button>
+    <span class="top-bar-title">
+      <template v-if="view === 'detail'">{{ selectedMonth }}月{{ selectedDay }}日</template>
+      <template v-else>{{ editingId ? '記念日を編集' : '記念日を登録' }}</template>
+    </span>
+  </div>
+
+  <!-- ══ Content ══ -->
+  <div class="content-area">
+
+    <!-- ─── カレンダー画面 ─── -->
+    <div v-if="view === 'calendar'">
+      <!-- Weekday headers -->
+      <div class="cal-weekdays">
+        <div v-for="(wd, i) in ['日','月','火','水','木','金','土']" :key="i"
+             class="cal-wday" :class="i===0?'w-sun':i===6?'w-sat':''">{{ wd }}</div>
+      </div>
+      <!-- Day cells -->
+      <div class="cal-grid">
+        <div
+          v-for="(cell, i) in calCells" :key="i"
+          class="cal-cell"
+          :class="[
+            !cell.day          ? 'cal-empty' : '',
+            cell.col === 0     ? 'cal-sun'   : '',
+            cell.col === 6     ? 'cal-sat'   : '',
+            isToday(cell.day)  ? 'cal-today' : '',
+          ]"
+          @click="cell.day && handleDayClick(cell.day)"
+        >
+          <span class="cal-day-num">{{ cell.day || '' }}</span>
+          <span v-if="cell.hasEvents" class="ev-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 詳細画面 ─── -->
+    <div v-else-if="view === 'detail'">
+      <div class="detail-date">{{ selectedMonth }}月{{ selectedDay }}日</div>
+
+      <!-- Events list -->
+      <div v-if="selectedEvents.length === 0" class="text-muted text-center py-3 small">
+        この日の記念日はありません
+      </div>
+      <div v-for="ev in selectedEvents" :key="ev.id" class="card ev-card">
+        <div class="card-body">
+          <div class="mb-1">
+            <span class="badge bg-primary">{{ ev.year }}年</span>
+          </div>
+          <div class="fw-bold mb-1">{{ ev.title }}</div>
+          <div v-if="ev.memo" class="text-muted small mb-3">{{ ev.memo }}</div>
+          <div v-else class="mb-2"></div>
+          <!-- Actions -->
+          <template v-if="confirmingDeleteId === ev.id">
+            <div class="del-confirm-inline">
+              <span>削除しますか？</span>
+              <button class="btn btn-danger btn-sm" @click="deleteEvent(ev.id)">削除する</button>
+              <button class="btn btn-outline-secondary btn-sm" @click="cancelDelete">キャンセル</button>
+            </div>
+          </template>
+          <div v-else class="ev-actions">
+            <button class="btn btn-outline-primary btn-sm" @click="openRegister(null, null, ev.id)">編集</button>
+            <button class="btn btn-outline-danger btn-sm" @click="confirmDelete(ev.id)">削除</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-outline-primary w-100 mt-3" @click="openRegister(selectedMonth, selectedDay)">
+        ＋ この日に記念日を追加
+      </button>
+    </div>
+
+    <!-- ─── 登録・編集画面 ─── -->
+    <div v-else-if="view === 'register'">
+      <form @submit.prevent="saveEvent">
+        <div class="d-flex flex-column gap-3">
+
+          <!-- タイトル -->
+          <div>
+            <label class="form-label">
+              タイトル <span class="text-danger">*</span>
+            </label>
+            <input
+              v-model="form.title"
+              type="text"
+              class="form-control"
+              :class="{ 'is-invalid': showErr && !form.title.trim() }"
+              placeholder="例：入社記念日"
+              maxlength="50"
+            >
+            <div class="invalid-feedback">タイトルを入力してください</div>
+          </div>
+
+          <!-- 日付 -->
+          <div>
+            <label class="form-label">日付</label>
+            <div class="date-row">
+              <select v-model.number="form.month" class="form-select">
+                <option v-for="m in 12" :key="m" :value="m">{{ m }}月</option>
+              </select>
+              <select v-model.number="form.day" class="form-select">
+                <option v-for="d in daysInFormMonth" :key="d" :value="d">{{ d }}日</option>
+              </select>
+              <input
+                v-model.number="form.year"
+                type="number"
+                class="form-control"
+                placeholder="年"
+                min="1900" max="2100"
+              >
+              <span class="date-unit">年</span>
+            </div>
+          </div>
+
+          <!-- メモ -->
+          <div>
+            <label class="form-label">
+              メモ <span class="text-muted small">（任意）</span>
+            </label>
+            <textarea
+              v-model="form.memo"
+              class="form-control"
+              rows="3"
+              placeholder="記念日についてのメモ"
+              maxlength="200"
+            ></textarea>
+          </div>
+
+          <!-- 保存 -->
+          <button type="submit" class="btn btn-primary w-100">
+            {{ editingId ? '更新する' : '登録する' }}
+          </button>
+
+          <!-- 削除（編集時のみ） -->
+          <div v-if="editingId">
+            <div v-if="confirmingDeleteId === editingId" class="del-confirm-bar">
+              <span>本当に削除しますか？</span>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-danger btn-sm" @click="deleteEvent(editingId)">削除する</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="cancelDelete">キャンセル</button>
+              </div>
+            </div>
+            <button v-else type="button" class="btn btn-outline-danger w-100"
+                    @click="confirmDelete(editingId)">
+              この記念日を削除
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+  </div><!-- /content-area -->
+
+  <!-- ══ FAB ══ -->
+  <button
+    v-if="view === 'calendar'"
+    class="btn btn-primary fab"
+    @click="openRegister()"
+    aria-label="記念日を追加"
+  >＋</button>
+
+</div><!-- /app-shell -->
+</div><!-- /app -->
+
+<!-- Vue CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+<!-- 自分のJS（Vue CDNの後に読み込む） -->
+<script src="./script/app.js"></script>
+
+</html>
